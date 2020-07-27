@@ -36,17 +36,19 @@ bool check_specific_pattern(long long prime, int* indices, int num_of_indices, i
     for (int i = 0; i < 10; i++) {
         long long new_number = prime;
         while (index_iterator != indices + num_of_indices) {
-            new_number = replace_digit(prime, *index_iterator, i);
+            new_number = replace_digit(new_number, *index_iterator, i);
+            index_iterator++;
         }
         if (bool_array[new_number]) {
             counter++;
         }
+        index_iterator = indices;
     }
 
-    return counter == 8;
+    return counter == 7;
 }
 
-bool check_pattern(long long prime, long long* primes, bool* bool_array, int number_of_primes) {
+bool check_pattern(long long prime, bool* bool_array) {
     // int counter = 0;
     // for (int i = 0; i < 10; i++) {
     //     long long new_number = replace_digit(prime, 1, i);
@@ -58,6 +60,8 @@ bool check_pattern(long long prime, long long* primes, bool* bool_array, int num
     // return counter == 7;
 
     int number_of_digits = num_of_digits(prime);
+    int indices[] = {1, 2};
+    return check_specific_pattern(prime, indices, 2, number_of_digits, bool_array);
 }
 
 int main() {
@@ -90,13 +94,17 @@ int main() {
     }
 
     // check all primes for condition
-    for (long long* prime = primes; prime != primes + number_of_primes; prime++) {
-        if (check_pattern(*prime, primes, bool_array, number_of_primes)) {
-            printf("%lld", *prime);
-            break;
-        }
+    /*for (long long* prime = primes; prime != primes + number_of_primes; prime++) {*/
+        /*if (check_pattern(*prime, bool_array)) {*/
+            /*printf("%lld", *prime);*/
+            /*break;*/
+        /*}*/
         /*printf("%d", check_pattern(*prime, primes, bool_array, number_of_primes));*/
-    }
+    /*}*/
+
+    int indices[] = {1,2};
+    int an = check_specific_pattern(56003, indices, 2, 5, bool_array);
+    printf("%d", an);
 
     return 0;
 }
