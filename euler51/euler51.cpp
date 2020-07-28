@@ -1,6 +1,8 @@
 #include <cmath>
+#include <cstdio>
 #include <cstring>
 #include <iostream>
+#include <ostream>
 #include <vector>
 
 int replace_digit(int original_number, int position, int new_digit) {
@@ -46,7 +48,11 @@ std::vector<int> get_indices(int number) {
 bool check_specific_pattern(int prime, bool* bool_array, std::vector<int> indices) {
     int counter = 0;
     std::vector<int>::iterator index_iter = indices.begin();
-    for (int i = 0; i < 10; i++, index_iter = indices.begin()) {
+    int start = 0;
+    if (indices.back() == num_of_digits(prime) - 1) {
+        start = 1;
+    }
+    for (int i = start; i < 10; i++, index_iter = indices.begin()) {
         int new_number = prime;
         while (index_iter != indices.end()) {
             new_number = replace_digit(new_number, *index_iter, i);
@@ -60,9 +66,8 @@ bool check_specific_pattern(int prime, bool* bool_array, std::vector<int> indice
 
 bool check_pattern(int prime, bool* bool_array) {
     int number_of_digits = num_of_digits(prime);
-    for (int i = 0; i < pow(2, number_of_digits); i++) {
-        std::vector<int> indices = get_indices(i);
-        bool check = check_specific_pattern(prime, bool_array, indices);
+    for (int i = 1; i < pow(2, number_of_digits) - 1; i++) {
+        bool check = check_specific_pattern(prime, bool_array, get_indices(i));
         if (check) return true;
     }
     return false;
@@ -90,8 +95,16 @@ int main() {
     for (; prime != primes.end(); prime++) {
         if (check_pattern(*prime, bool_array)) {
             std::cout << *prime << std::endl;
+            break;
         }
     }
+
+    // std::vector<int> indices = get_indices(6);
+    // for (std::vector<int>::iterator iter = indices.begin(); iter != indices.end(); iter++) std::cout << *iter << " ";
+
+    // std::cout << check_specific_pattern(56003, bool_array, indices);
+
+    // std::cout << check_pattern(121313, bool_array);
 
     return 0;
 }
