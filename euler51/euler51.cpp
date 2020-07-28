@@ -45,7 +45,8 @@ std::vector<int> get_indices(int number) {
     return indices;
 }
 
-bool check_specific_pattern(int prime, bool* bool_array, std::vector<int> indices) {
+int check_specific_pattern(int prime, bool* bool_array, std::vector<int> indices) {
+    int store;
     int counter = 0;
     std::vector<int>::iterator index_iter = indices.begin();
     int start = 0;
@@ -58,19 +59,22 @@ bool check_specific_pattern(int prime, bool* bool_array, std::vector<int> indice
             new_number = replace_digit(new_number, *index_iter, i);
             index_iter++;
         }
+        if (bool_array[new_number] && counter == 0) {
+            store = new_number;
+        }
         if (bool_array[new_number]) counter++;
     }
 
-    return counter == 8;
+    return counter == 8 ? store : -1;
 }
 
-bool check_pattern(int prime, bool* bool_array) {
+int check_pattern(int prime, bool* bool_array) {
     int number_of_digits = num_of_digits(prime);
     for (int i = 1; i < pow(2, number_of_digits) - 1; i++) {
-        bool check = check_specific_pattern(prime, bool_array, get_indices(i));
-        if (check) return true;
+        int check = check_specific_pattern(prime, bool_array, get_indices(i));
+        if (check != -1) return check;
     }
-    return false;
+    return -1;
 }
 
 int main() {
@@ -93,18 +97,11 @@ int main() {
 
     std::vector<int>::iterator prime = primes.begin();
     for (; prime != primes.end(); prime++) {
-        if (check_pattern(*prime, bool_array)) {
-            std::cout << *prime << std::endl;
+        int check = check_pattern(*prime, bool_array);
+        if (check != -1) {
+            std::cout << check << std::endl;
             break;
         }
     }
-
-    // std::vector<int> indices = get_indices(6);
-    // for (std::vector<int>::iterator iter = indices.begin(); iter != indices.end(); iter++) std::cout << *iter << " ";
-
-    // std::cout << check_specific_pattern(56003, bool_array, indices);
-
-    // std::cout << check_pattern(121313, bool_array);
-
     return 0;
 }
