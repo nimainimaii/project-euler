@@ -1,8 +1,6 @@
 #include <cmath>
-#include <cstdio>
 #include <cstring>
 #include <iostream>
-#include <ostream>
 #include <vector>
 
 // function to repalce a digit at a positon(0-indexed from right) in original_number with new_digit
